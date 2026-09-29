@@ -73,11 +73,14 @@ export const ExportWatermarkModal: React.FC<ExportWatermarkModalProps> = ({
             {/* Watermarked Document Preview Box */}
             <div className="relative border-2 border-dashed border-slate-300 bg-slate-50 rounded-2xl p-4 sm:p-6 overflow-hidden">
               {/* Diagonal Watermark Overlay */}
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-10 rotate-[-25deg] select-none text-center">
-                <div className="text-xs font-mono font-bold uppercase tracking-widest text-slate-900 space-y-4">
-                  <div>{exportData.watermark}</div>
-                  <div>{exportData.watermark}</div>
-                  <div>{exportData.watermark}</div>
+              <div className="absolute inset-0 pointer-events-none flex items-center justify-center select-none text-center">
+                <img src="/sign.png" alt="" className="w-56 h-56 object-contain opacity-[0.06] pointer-events-none select-none" />
+                <div className="absolute inset-0 flex items-center justify-center opacity-10 rotate-[-25deg]">
+                  <div className="text-xs font-mono font-bold uppercase tracking-widest text-slate-900 space-y-4">
+                    <div>{exportData.watermark}</div>
+                    <div>{exportData.watermark}</div>
+                    <div>{exportData.watermark}</div>
+                  </div>
                 </div>
               </div>
 
@@ -85,7 +88,7 @@ export const ExportWatermarkModal: React.FC<ExportWatermarkModalProps> = ({
               <div className="relative z-10 space-y-3 font-mono text-xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-200 pb-2 gap-1.5">
                   <div className="flex items-center gap-2">
-                    <img src="/logo.jpeg" alt="ManoBal" className="h-7 w-auto object-contain rounded border border-slate-200 bg-white" />
+                    <img src="/long_logo.png" alt="ManoBal" className="h-7 w-auto object-contain rounded border border-slate-200 bg-white" />
                     <span className="text-slate-800 font-bold text-[11px] break-words">DEFENCE WELFARE BRIEF · 🇮🇳 RESTRICTED</span>
                   </div>
                   <span className="text-slate-500 text-[10px] sm:text-xs">DOC ID: {exportData.export_id}</span>

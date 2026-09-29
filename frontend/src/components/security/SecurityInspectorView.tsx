@@ -52,8 +52,9 @@ export const SecurityInspectorView: React.FC = () => {
       <div className="bg-white border border-slate-200 p-4 sm:p-6 rounded-3xl shadow-sm flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-2">
-            <span className="self-start text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shrink-0">
-              Security Stack & DPDP Compliance
+            <span className="self-start text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200 shrink-0 flex items-center gap-1.5">
+              <img src="/sign.png" alt="ManoBal" className="w-3.5 h-3.5 object-contain" />
+              <span>Security Stack & DPDP Compliance</span>
             </span>
             <h1 className="text-base sm:text-xl font-black text-slate-900 leading-snug break-words">
               Zero-Trust Architecture & Append-Only Audit Trail

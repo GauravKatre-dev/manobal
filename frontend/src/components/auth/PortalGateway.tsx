@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Shield, Users, Stethoscope, Smartphone, Lock, ArrowRight, Sparkles, Award, Scale, CheckCircle2, ChevronRight } from 'lucide-react';
+import { scrollToTop } from '../../utils/scroll';
 
 interface PortalGatewayProps {
   onSelectPortal: (portal: 'command' | 'welfare' | 'soldier', forceCategory: string) => void;
@@ -18,6 +19,10 @@ export const PortalGateway: React.FC<PortalGatewayProps> = ({
 }) => {
   const isHi = language === 'hi';
   const [selectedForce, setSelectedForce] = useState<string>('ALL');
+
+  useEffect(() => {
+    scrollToTop();
+  }, []);
 
   const forceBranches = [
     {
@@ -77,7 +82,7 @@ export const PortalGateway: React.FC<PortalGatewayProps> = ({
         <div className="py-1 flex justify-center">
           <div className="relative p-2 sm:p-2.5 bg-white rounded-2xl sm:rounded-3xl shadow-md border border-slate-200/80 inline-block hover:shadow-lg transition-shadow">
             <img 
-              src="/logo.jpeg" 
+              src="/long_logo.png" 
               alt="ManoBal - Strong Minds, Safer Forces, Better Tomorrow" 
               className="h-20 sm:h-28 w-auto object-contain rounded-xl"
             />

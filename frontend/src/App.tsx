@@ -12,6 +12,7 @@ import { Dashboard2View } from './components/dashboard2/Dashboard2View';
 import { Dashboard3View } from './components/dashboard3/Dashboard3View';
 import { SecurityInspectorView } from './components/security/SecurityInspectorView';
 import { Shield, Sparkles } from 'lucide-react';
+import { scrollToTop } from './utils/scroll';
 
 type ViewState =
   | 'gateway'
@@ -43,28 +44,40 @@ export function App() {
     });
   }, []);
 
+  // Guarantee instant scroll-to-top whenever viewState or currentPortal changes
+  useEffect(() => {
+    scrollToTop();
+  }, [viewState, currentPortal]);
+
   const handlePortalSelect = (portal: 'command' | 'welfare' | 'soldier', forceCategory: string) => {
     setCurrentPortal(portal);
     setSelectedForce(forceCategory);
     setViewState('auth_modal');
+    setActiveMobileTab(portal === 'soldier' ? 'chat' : portal === 'command' ? 'roster' : 'alerts');
+    scrollToTop();
   };
 
   const handleLoginSuccess = (user: UserProfile) => {
     setCurrentUser(user);
     if (user.role === 'commander' || user.role === 'admin') {
       setCurrentPortal('command');
+      setActiveMobileTab('roster');
     } else if (user.role === 'welfare_officer') {
       setCurrentPortal('welfare');
+      setActiveMobileTab('alerts');
     } else {
       setCurrentPortal('soldier');
+      setActiveMobileTab('chat');
     }
     setViewState('dashboard');
+    scrollToTop();
   };
 
   const handleSignOut = () => {
     setCurrentUser(null);
     setViewState('gateway');
     setActiveMobileTab('');
+    scrollToTop();
   };
 
   return (
@@ -77,6 +90,7 @@ export function App() {
       activeTab={activeMobileTab}
       setActiveTab={setActiveMobileTab}
       showBottomNav={viewState === 'dashboard'}
+      viewState={viewState}
     >
       <div className="min-h-full flex flex-col font-sans antialiased text-slate-800 selection:bg-emerald-100 selection:text-emerald-900">
         {/* Navigation Bar when inside a dashboard or security enclave */}
@@ -127,6 +141,7 @@ export function App() {
             <Dashboard1View
               currentUserRole={currentUser?.role || 'commander'}
               activeMobileTab={activeMobileTab}
+              setActiveMobileTab={setActiveMobileTab}
               isMobileFrame={isMobileFrame}
             />
           )}
@@ -135,6 +150,7 @@ export function App() {
           {viewState === 'dashboard' && currentPortal === 'welfare' && (
             <Dashboard2View
               activeMobileTab={activeMobileTab}
+              setActiveMobileTab={setActiveMobileTab}
               isMobileFrame={isMobileFrame}
             />
           )}
@@ -145,6 +161,7 @@ export function App() {
               language={language}
               onOpenEmergency={() => setIsEmergencyOpen(true)}
               activeMobileTab={activeMobileTab}
+              setActiveMobileTab={setActiveMobileTab}
               isMobileFrame={isMobileFrame}
             />
           )}

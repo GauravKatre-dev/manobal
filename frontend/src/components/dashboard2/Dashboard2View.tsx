@@ -14,13 +14,15 @@ import {
   Stethoscope, AlertCircle, Calendar, MessageSquare,
   BarChart3, RefreshCw, CheckCircle, ShieldCheck
 } from 'lucide-react';
+import { scrollToTop } from '../../utils/scroll';
 
 interface Dashboard2ViewProps {
   activeMobileTab?: string;
+  setActiveMobileTab?: (tab: string) => void;
   isMobileFrame?: boolean;
 }
 
-export const Dashboard2View: React.FC<Dashboard2ViewProps> = ({ activeMobileTab, isMobileFrame }) => {
+export const Dashboard2View: React.FC<Dashboard2ViewProps> = ({ activeMobileTab, setActiveMobileTab, isMobileFrame }) => {
   const [alerts, setAlerts] = useState<WelfareCase[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -37,6 +39,10 @@ export const Dashboard2View: React.FC<Dashboard2ViewProps> = ({ activeMobileTab,
   const [isAnalyticsOpen, setIsAnalyticsOpen] = useState(false);
 
   const [notification, setNotification] = useState<string | null>(null);
+
+  useEffect(() => {
+    scrollToTop();
+  }, [activeSubTab]);
 
   useEffect(() => {
     loadAlerts();

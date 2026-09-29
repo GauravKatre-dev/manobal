@@ -36,7 +36,7 @@ export const SoldierLogin: React.FC<SoldierLoginProps> = ({ onLogin, onBack }) =
       <div className="text-center space-y-2">
         <div className="flex justify-center mb-2">
           <div className="p-1.5 bg-white border border-slate-200/90 rounded-2xl shadow-xs inline-block">
-            <img src="/logo.jpeg" alt="ManoBal" className="h-12 w-auto object-contain rounded-xl" />
+            <img src="/long_logo.png" alt="ManoBal" className="h-12 w-auto object-contain rounded-xl" />
           </div>
         </div>
         <h2 className="text-2xl font-black text-slate-900 tracking-tight flex items-center justify-center gap-1.5">

@@ -42,11 +42,13 @@ export const SupportChatbot: React.FC<SupportChatbotProps> = ({
   const [consentGranted, setConsentGranted] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
 
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
   const isHi = language === 'hi';
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
@@ -137,8 +139,8 @@ export const SupportChatbot: React.FC<SupportChatbotProps> = ({
       {/* Header with Privacy Indicator */}
       <div className="bg-slate-50/80 px-3.5 sm:px-5 py-2.5 sm:py-3.5 border-b border-slate-100 flex items-center justify-between gap-2">
         <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
-            <Bot className="w-4 h-4 sm:w-5 sm:h-5" />
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-white border border-slate-200 flex items-center justify-center shrink-0 p-1 shadow-xs">
+            <img src="/sign.png" alt="Manobal Buddy" className="w-full h-full object-contain" />
           </div>
           <div className="min-w-0">
             <h3 className="text-xs font-extrabold text-slate-900 flex items-center gap-1.5 truncate">
@@ -163,7 +165,7 @@ export const SupportChatbot: React.FC<SupportChatbotProps> = ({
       </div>
 
       {/* Messages Stream */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
+      <div ref={messagesContainerRef} className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4">
         {messages.map((m, idx) => {
           const isUser = m.sender === 'user';
           const isRed = m.tier === 'Red';
@@ -175,17 +177,21 @@ export const SupportChatbot: React.FC<SupportChatbotProps> = ({
               className={`flex items-start gap-3 ${isUser ? 'flex-row-reverse' : 'flex-row'}`}
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs ${
+                className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-xs overflow-hidden ${
                   isUser
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : isRed
-                    ? 'bg-rose-600 text-white shadow-xs'
+                    ? 'bg-rose-50 border border-rose-300 p-1 shadow-xs'
                     : isAmber
-                    ? 'bg-amber-500 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 border border-slate-200'
+                    ? 'bg-amber-50 border border-amber-300 p-1 shadow-xs'
+                    : 'bg-white border border-slate-200 p-1 shadow-xs'
                 }`}
               >
-                {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                {isUser ? (
+                  <User className="w-4 h-4" />
+                ) : (
+                  <img src="/sign.png" alt="Buddy" className="w-full h-full object-contain" />
+                )}
               </div>
 
               <div
@@ -283,8 +289,6 @@ export const SupportChatbot: React.FC<SupportChatbotProps> = ({
             </p>
           </div>
         )}
-
-        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Toolbar */}

@@ -13,14 +13,16 @@ import {
   Users, Search, Filter, UploadCloud, BarChart3,
   RefreshCw, CheckCircle, Shield, Scale
 } from 'lucide-react';
+import { scrollToTop } from '../../utils/scroll';
 
 interface Dashboard1ViewProps {
   currentUserRole: string;
   activeMobileTab?: string;
+  setActiveMobileTab?: (tab: string) => void;
   isMobileFrame?: boolean;
 }
 
-export const Dashboard1View: React.FC<Dashboard1ViewProps> = ({ currentUserRole, activeMobileTab, isMobileFrame }) => {
+export const Dashboard1View: React.FC<Dashboard1ViewProps> = ({ currentUserRole, activeMobileTab, setActiveMobileTab, isMobileFrame }) => {
   const [activeTab, setActiveTab] = useState<'roster' | 'workload'>('roster');
   const [selectedForce, setSelectedForce] = useState<string>('ALL');
   const [units, setUnits] = useState<Unit[]>([]);
@@ -31,10 +33,16 @@ export const Dashboard1View: React.FC<Dashboard1ViewProps> = ({ currentUserRole,
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    scrollToTop();
+  }, [activeTab]);
+
+  useEffect(() => {
     if (activeMobileTab === 'workload') {
       setActiveTab('workload');
     } else if (activeMobileTab === 'roster') {
       setActiveTab('roster');
+    } else if (activeMobileTab === 'analytics') {
+      setAnalyticsUnitId('ALL');
     }
   }, [activeMobileTab]);
 

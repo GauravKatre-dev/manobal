@@ -75,9 +75,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div className="shrink-0 flex items-center">
               <img
-                src="/logo.jpeg"
+                src="/long_logo.png"
                 alt="ManoBal"
-                className="h-7 sm:h-9 w-auto max-w-[110px] sm:max-w-[155px] object-contain rounded-md border border-slate-200/80 bg-white p-0.5 shadow-xs"
+                className="h-7 sm:h-9 w-auto max-w-[115px] sm:max-w-[165px] object-contain rounded-md border border-slate-200/80 bg-white p-0.5 shadow-xs"
               />
             </div>
             <div className="min-w-0 flex flex-col justify-center">

@@ -91,7 +91,7 @@ export const SelfAssessmentView: React.FC<SelfAssessmentViewProps> = ({ language
                 <div className="font-bold text-slate-900 break-words leading-snug">
                   {idx + 1}. {q.text}
                 </div>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 gap-2 sm:gap-2.5">
                   {OPTIONS.map((opt) => {
                     const isSelected = answers[q.id] === opt.val;
                     return (
@@ -99,13 +99,24 @@ export const SelfAssessmentView: React.FC<SelfAssessmentViewProps> = ({ language
                         type="button"
                         key={opt.val}
                         onClick={() => handleSelect(q.id, opt.val)}
-                        className={`py-2 px-2.5 rounded-xl text-[11px] font-semibold border transition-all min-w-0 ${
+                        className={`py-2 px-2.5 rounded-xl text-xs font-medium border transition-all text-left flex items-center gap-2 min-h-[44px] ${
                           isSelected
-                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-sm font-bold'
-                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
+                            ? 'bg-teal-600 text-white border-teal-600 shadow-sm font-bold ring-2 ring-teal-500/20'
+                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100 hover:border-slate-300'
                         }`}
                       >
-                        <span className="truncate w-full text-center block">{isHi ? opt.label_hi : opt.label_en}</span>
+                        <span
+                          className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-mono font-bold shrink-0 border ${
+                            isSelected
+                              ? 'bg-white text-teal-700 border-white'
+                              : 'bg-slate-100 text-slate-600 border-slate-300'
+                          }`}
+                        >
+                          {opt.val}
+                        </span>
+                        <span className="leading-tight text-[11px] sm:text-xs break-words">
+                          {isHi ? opt.label_hi : opt.label_en}
+                        </span>
                       </button>
                     );
                   })}

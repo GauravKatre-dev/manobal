@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Smartphone, Monitor, Shield, PhoneCall, Wifi, Battery, Signal, Home, Activity, Heart, Bot, Lock, Users, AlertTriangle, Scale, Calendar, FileText } from 'lucide-react';
 import { UserProfile } from '../../types';
+import { scrollToTop } from '../../utils/scroll';
 
 interface MobileShellProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ interface MobileShellProps {
   activeTab?: string;
   setActiveTab?: (tab: string) => void;
   showBottomNav?: boolean;
+  viewState?: string;
 }
 
 export const MobileShell: React.FC<MobileShellProps> = ({
@@ -24,9 +26,19 @@ export const MobileShell: React.FC<MobileShellProps> = ({
   activeTab,
   setActiveTab,
   showBottomNav = true,
+  viewState,
 }) => {
   const [currentTime, setCurrentTime] = useState('');
   const [isMobileScreen, setIsMobileScreen] = useState(false);
+  const viewportRef = useRef<HTMLDivElement>(null);
+
+  // Automatically reset scroll to top on ANY navigation / view transition
+  useEffect(() => {
+    scrollToTop();
+    if (viewportRef.current) {
+      viewportRef.current.scrollTop = 0;
+    }
+  }, [viewState, currentPortal, activeTab, isMobileFrame]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -215,6 +227,7 @@ export const MobileShell: React.FC<MobileShellProps> = ({
         {/* Desktop Top Control Banner (In document flow, NOT floating over headers) */}
         <div className="bg-slate-900 text-white px-4 py-2 border-b border-slate-800 flex items-center justify-between text-xs">
           <div className="flex items-center gap-2">
+            <img src="/sign.png" alt="ManoBal" className="w-4 h-4 object-contain" />
             <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="font-bold text-slate-200 flex items-center gap-1.5">
               <span>🇮🇳</span>
@@ -258,6 +271,7 @@ export const MobileShell: React.FC<MobileShellProps> = ({
       {/* Top Tactical Control Bar placed cleanly ABOVE the smartphone chassis (never floating over phone contents) */}
       <div className="w-full max-w-[420px] mb-3 flex items-center justify-between gap-2">
         <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 font-bold text-[11px] shadow-sm">
+          <img src="/sign.png" alt="ManoBal" className="w-4 h-4 object-contain" />
           <span>🇮🇳</span>
           <span>Forces Mobile Simulator</span>
         </div>
@@ -309,7 +323,11 @@ export const MobileShell: React.FC<MobileShellProps> = ({
         </div>
 
         {/* Smartphone Screen Viewport */}
-        <div className={`flex-1 overflow-y-auto overflow-x-hidden w-full bg-slate-50 relative flex flex-col text-slate-900 ${showBottomNav && currentUser ? 'pb-16' : 'pb-4'} scrollbar-thin scrollbar-thumb-slate-300`}>
+        <div 
+          ref={viewportRef}
+          data-scroll-container
+          className={`mobile-screen-viewport flex-1 overflow-y-auto overflow-x-hidden w-full bg-slate-50 relative flex flex-col text-slate-900 ${showBottomNav && currentUser ? 'pb-16' : 'pb-4'} scrollbar-thin scrollbar-thumb-slate-300`}
+        >
           {children}
         </div>
 
