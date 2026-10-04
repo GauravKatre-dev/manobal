@@ -1,0 +1,23 @@
+{
+  "name": "manobal",
+  "version": "2.0.0",
+  "description": "MANOBAL (मनोबल) - AI-Based Predictive Personnel Stress and Welfare Monitoring System",
+  "private": true,
+  "scripts": {
+    "dev": "bash ./start.sh",
+    "start": "bash ./start.sh",
+    "backend": "./backend/venv/bin/uvicorn app.main:app --app-dir ./backend --host 0.0.0.0 --port 8001",
+    "frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build"
+  },
+  "keywords": [
+    "manobal",
+    "sih26186",
+    "welfare",
+    "fastapi",
+    "react",
+    "vite"
+  ],
+  "author": "Manobal Team",
+  "license": "UNLICENSED"
+}

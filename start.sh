@@ -9,10 +9,27 @@ echo "  MANOBAL (मनोबल) · Defensive Personnel Welfare Monitoring Syst
 echo "  SIH26186 · Predictive Stress & Welfare Monitoring Architecture"
 echo "================================================================="
 
+# Clean up any stale processes on ports 8001 and 5174
+for port in 8001 5174; do
+  pids=$(lsof -ti :$port 2>/dev/null || true)
+  if [ -n "$pids" ]; then
+    echo "Clearing previous process on port $port (PID: $pids)..."
+    kill -9 $pids 2>/dev/null || true
+    sleep 0.5
+  fi
+done
+
+# Resolve uvicorn binary
+UVICORN_BIN="$DIR/backend/venv/bin/uvicorn"
+if [ ! -f "$UVICORN_BIN" ]; then
+  UVICORN_BIN="uvicorn"
+fi
+
 # Start Backend API on port 8001
 echo "[1/2] Starting Manobal Defensive Backend API on http://localhost:8001..."
-./backend/venv/bin/uvicorn app.main:app --app-dir "$DIR/backend" --host 0.0.0.0 --port 8001 &
+"$UVICORN_BIN" app.main:app --app-dir "$DIR/backend" --host 0.0.0.0 --port 8001 --reload &
 BACKEND_PID=$!
+
 
 # Start Frontend on port 5174
 echo "[2/2] Starting Manobal Vite React Frontend on http://localhost:5174..."
@@ -23,6 +40,12 @@ cleanup() {
   echo ""
   echo "Shutting down Manobal systems..."
   kill $BACKEND_PID $FRONTEND_PID 2>/dev/null || true
+  for port in 8001 5174; do
+    pids=$(lsof -ti :$port 2>/dev/null || true)
+    if [ -n "$pids" ]; then
+      kill -9 $pids 2>/dev/null || true
+    fi
+  done
   exit 0
 }
 
@@ -38,3 +61,4 @@ echo "  - Press Ctrl+C to terminate services"
 echo "================================================================="
 
 wait
+

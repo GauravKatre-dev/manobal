@@ -39,8 +39,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Health check & Keep-Alive Ping Endpoints for Render / Cron services
+@app.get("/")
+@app.get("/health")
+def health_ping():
+    return {
+        "status": "ok",
+        "service": "manobal-defense-backend",
+        "timestamp": datetime.utcnow().isoformat() + "Z"
+    }
+
 # Active user state for demo role switching across Armed Forces, CAPFs, State Police, and NDRF
 DEMO_USERS = {
+
     "admin": {
         "id": "U-ADMIN",
         "name": "Brig. J. S. Cheema (HQ National Command)",
