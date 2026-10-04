@@ -198,6 +198,7 @@ def startup_event():
 # 1. AUTHENTICATION & DEMO ROLE SWITCHING
 # -------------------------------------------------------------
 @app.post("/api/auth/login")
+@app.post("/auth/login")
 def authenticate_user(payload: Dict[str, Any]):
     """
     Multi-Modal Login Framework:
@@ -250,6 +251,7 @@ def authenticate_user(payload: Dict[str, Any]):
     }
 
 @app.get("/api/auth/roles")
+@app.get("/auth/roles")
 def list_demo_roles():
     """Lists available simulated roles for rapid evaluation."""
     return {
@@ -258,6 +260,7 @@ def list_demo_roles():
     }
 
 @app.post("/api/auth/switch-role/{role_key}")
+@app.post("/auth/switch-role/{role_key}")
 def switch_active_role(role_key: str):
     """Switches the active evaluation role."""
     global CURRENT_SESSION_USER
@@ -276,8 +279,10 @@ def switch_active_role(role_key: str):
     return {"message": "Switched successfully", "user": user}
 
 @app.get("/api/auth/me")
+@app.get("/auth/me")
 def get_current_user_profile(user: Dict[str, Any] = Depends(get_current_user)):
     return user
+
 
 # -------------------------------------------------------------
 # 2. DASHBOARD 1: ADMIN & COMMANDER (Units, Personnel, Remarks, HRMS)

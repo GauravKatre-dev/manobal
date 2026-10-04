@@ -3,7 +3,19 @@ import {
   WelfareCase, CounsellingRequest, AuditLog
 } from '../types';
 
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8001/api';
+const RAW_API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8001/api';
+
+// Normalize API_BASE: automatically remove trailing slashes and ensure '/api' suffix is present
+const getNormalizedApiBase = (url: string): string => {
+  let clean = (url || '').trim().replace(/\/+$/, '');
+  if (!clean) return 'http://localhost:8001/api';
+  if (!clean.endsWith('/api')) {
+    clean = `${clean}/api`;
+  }
+  return clean;
+};
+
+const API_BASE = getNormalizedApiBase(RAW_API_URL);
 
 let activeRoleKey = 'commander_u1';
 
@@ -35,12 +47,22 @@ export const api = {
       headers: authHeaders(),
       body: JSON.stringify(payload),
     });
+    if (!res.ok) {
+      const errText = await res.text();
+      let errMsg = `Backend error (HTTP ${res.status})`;
+      try {
+        const errJson = JSON.parse(errText);
+        if (errJson.detail) errMsg = errJson.detail;
+      } catch {}
+      throw new Error(errMsg);
+    }
     const data = await res.json();
     if (data.user?.id) {
       if (payload.role_key) activeRoleKey = payload.role_key;
     }
     return data;
   },
+
 
   async getRoles(): Promise<{ current_user_key: string; available_roles: Record<string, UserProfile> }> {
     const res = await fetch(`${API_BASE}/auth/roles`);
